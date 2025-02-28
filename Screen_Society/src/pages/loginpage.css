@@ -1,0 +1,19 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("../assets/bg3.jpg") no-repeat center/cover; /* Change this path */
+    color: white;
+    position: relative;
+  }
+  
+  /* Dark overlay for better readability */
+  .login-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6); /* Adjust darkness */
+    z-index: -1;
+  }
+  

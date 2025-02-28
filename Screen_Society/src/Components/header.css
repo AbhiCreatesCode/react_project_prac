@@ -1,0 +1,227 @@
+/* Background and layout */
+.header {
+  position: relative;
+  background: rgba(0, 0, 0, 0.8);
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 16px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.header-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.logo {
+  color: red;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  width: 50%;
+  justify-content: space-evenly;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-item:hover {
+  color: red;
+  transform: scale(1.1);
+}
+
+/* Right-side buttons */
+.right-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Sign In Button */
+.sign-in {
+  background: red;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.sign-in .icon {
+  margin-right: 8px;
+}
+
+.sign-in:hover {
+  background: darkred;
+  
+}
+
+/* Language Dropdown */
+.language-dropdown {
+  position: relative;
+}
+
+.language-btn {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.language-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Language options (hidden by default) */
+.language-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 120px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.language-options button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  text-align: left;
+}
+
+.language-options button:hover {
+  background: red;
+}
+
+/* Mobile Navigation */
+.mobile-menu {
+  display: none;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.mobile-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Mobile Language Dropdown */
+.mobile-language-dropdown {
+  margin-top: 10px;
+}
+
+.mobile-language-options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.mobile-language-options button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.mobile-language-options button:hover {
+  background: red;
+}
+
+
+/* profile css code */
+/* Profile Button */
+.profile-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(45deg, rgb(14, 51, 197), rgb(19, 168, 218));
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  /* box-shadow: 0px 4px 8px rgba(255, 0, 0, 0.5); */
+}
+
+/* Hover Effect */
+.profile-btn:hover {
+  transform: scale(1.05);
+  /* box-shadow: 0px 6px 12px rgba(255, 0, 0, 0.7); */
+}
+
+/* Profile Button Icon */
+.profile-btn .icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+      display: none;
+  }
+
+  .mobile-menu {
+      display: block;
+  }
+
+  .right-buttons {
+      display: none;
+  }
+}

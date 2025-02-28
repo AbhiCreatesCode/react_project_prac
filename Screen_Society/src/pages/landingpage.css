@@ -1,0 +1,90 @@
+
+.landing-container {
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.8), 
+        rgba(0, 0, 0, 0.6)
+    ), 
+    url("../assets/allmovies_enhanced.jpg") no-repeat center/cover;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark overlay for readability */
+.landing-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+/* Welcome text animation */
+.welcome-text {
+    font-size: 48px;
+    font-weight: bold;
+    color: red;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+/* Subtitle animation */
+.sub-text {
+    font-size: 24px;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out 0.5s forwards;
+}
+
+/* Keyframe animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Movie Scroller */
+.movie-scroller {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-top: 20px;
+}
+
+/* Scrolling track */
+.scroller-track {
+    display: flex;
+    gap: 20px;
+    animation: scrollMovie 20s linear infinite;
+    white-space: nowrap;
+}
+
+/* Movie images */
+.scroller-track img {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Animation for scrolling effect */
+@keyframes scrollMovie {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
