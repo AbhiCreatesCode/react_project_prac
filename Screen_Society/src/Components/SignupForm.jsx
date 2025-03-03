@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import "./Signup.css";
 
@@ -187,18 +187,19 @@
 //     );
 // };
 
-// export default SignupForm;
-
-
-import { useState } from "react";
+// export default SignupForm;import { useState } from "react";
+// import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Signup.css";
 
 const SignupForm = () => {
+    // ✅ Hooks should always be at the top level
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
 
@@ -206,48 +207,41 @@ const SignupForm = () => {
         setStep(step + 1);
     };
 
-    // const handleSignup = () => {
-    //     const user = { email, username };
-    //     localStorage.setItem("isLoggedIn", "true"); // Store login status
-    //     localStorage.setItem("user", JSON.stringify(user)); // Store user details
-
-    //     setShowPopup(true); // Show popup
-
-    //     setTimeout(() => {
-    //         setShowPopup(false); // Hide popup
-    //         navigate("/"); // Redirect to Landing Page
-    //         window.location.reload(); // Force Header to update immediately
-    //     }, 1000);
-    // };
-
     const handleSignup = async () => {
+        setError(""); // ✅ Clear previous errors
+
         const newUser = { email, username, password };
-    
+
         try {
-            const response = await fetch("http://localhost:5000/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newUser)
-            });
-    
-            if (response.ok) {
-                setShowPopup(true);
-                setTimeout(() => {
-                    setShowPopup(false);
-                    navigate("/login");
-                }, 1000);
-            } else {
-                alert("Signup failed! Please try again.");
+            console.log("Checking if email exists...");
+            const { data: existingUsers } = await axios.get(`http://localhost:5000/users?email=${email}`);
+
+            if (existingUsers.length > 0) {
+                setError("Email already in use. Please use a different one.");
+                return;
             }
+
+            console.log("Sending new user to JSON server...");
+            await axios.post("http://localhost:5000/users", newUser);
+
+            console.log("Signup successful!");
+            setShowPopup(true);
+
+            setTimeout(() => {
+                setShowPopup(false);
+                navigate("/"); // ✅ Redirect to home page after signup
+            }, 2000);
         } catch (error) {
             console.error("Error signing up:", error);
+            setError("Signup failed! Please try again.");
         }
     };
-    
 
     return (
         <div className="signup-page">
             <div className="signup-container">
+                {error && <p className="error-message">{error}</p>} {/* ✅ Display errors */}
+
                 {step === 1 && (
                     <>
                         <h1>Sign Up for ReelConnect</h1>
@@ -288,7 +282,7 @@ const SignupForm = () => {
                         <p>Email: {email}</p>
                         <input 
                             type="password" 
-                            placeholder="Create a password" 
+                            placeholder="Create a password (min 6 characters)" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)}
                             required 
@@ -300,7 +294,7 @@ const SignupForm = () => {
                 )}
             </div>
 
-            {/* Popup for successful signup */}
+            {/* Success Popup */}
             {showPopup && (
                 <div className="popup">
                     <p>Signup Completed! Redirecting...</p>

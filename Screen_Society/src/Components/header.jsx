@@ -228,135 +228,213 @@
 // export default Header;
 
 
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+// import { FaBars, FaTimes, FaUser, FaGlobe } from "react-icons/fa";
+// import { NavLink, useNavigate } from "react-router-dom";
+// import "./header.css"; // Import external CSS
+
+// const Header = () => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [isLangOpen, setIsLangOpen] = useState(false);
+//   const [isLoggedIn, setIsLoggedIn] = useState(null); // 🚀 Fix: Start with null to prevent incorrect UI
+//   const [user, setUser] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+//     setIsLoggedIn(loggedInStatus);
+
+//     const storedUser = localStorage.getItem("user");
+//     if (storedUser) {
+//       setUser(JSON.parse(storedUser));
+//     }
+//   }, []);
+
+//   const handleLogout = () => {
+//     localStorage.removeItem("isLoggedIn");
+//     localStorage.removeItem("user");
+//     setIsLoggedIn(false);
+//     setUser(null);
+//     navigate("/");
+//   };
+
+//   return (
+//     <header className="header">
+//       <div className="overlay"></div>
+
+//       <div className="header-container">
+//         <div className="logo">ReelConnect</div>
+
+//         <nav className="nav-links">
+//           <NavLink to="/" className="nav-item">Home</NavLink>
+//           <NavLink to="/explore" className="nav-item">Explore</NavLink>
+//           <NavLink to="/trending" className="nav-item">Trending</NavLink>
+//           <NavLink to="/genres" className="nav-item">Genres</NavLink>
+//           <NavLink to="/watchlist" className="nav-item">Watchlist</NavLink>
+//         </nav>
+
+//         <div className="right-buttons">
+//           <div 
+//             className="language-dropdown" 
+//             onMouseEnter={() => setIsLangOpen(true)} 
+//             onMouseLeave={() => setIsLangOpen(false)}
+//           >
+//             <button className="language-btn">
+//               <FaGlobe className="icon" />
+//               <span>Language</span>
+//             </button>
+//             {isLangOpen && (
+//               <div className="language-options">
+//                 <button>English</button>
+//                 <button>Telugu</button>
+//                 <button>Hindi</button>
+//               </div>
+//             )}
+//           </div>
+
+//           {/* 🚀 Fix: Prevent rendering wrong button before useEffect completes */}
+//           {isLoggedIn === null ? (
+//             <span>Loading...</span> // Optional: Can replace with a spinner
+//           ) : isLoggedIn ? (
+//             <>
+//               <NavLink to="/profile" className="profile-btn">
+//                 <FaUser className="icon" />
+//                 <span>{user ? user.username : "Profile"}</span>
+//               </NavLink>
+//               <button onClick={handleLogout} className="logout-btn">Logout</button>
+//             </>
+//           ) : (
+//             <NavLink to="/login" className="sign-in">
+//               <FaUser className="icon" />
+//               <span>Sign In</span>
+//             </NavLink>
+//           )}
+//         </div>
+
+//         <div className="mobile-menu">
+//           <button onClick={() => setIsOpen(!isOpen)} className="menu-button">
+//             {isOpen ? <FaTimes /> : <FaBars />}
+//           </button>
+//         </div>
+//       </div>
+
+//       {isOpen && (
+//         <div className="mobile-nav">
+//           <NavLink to="/" className="mobile-nav-item">Home</NavLink>
+//           <NavLink to="/explore" className="mobile-nav-item">Explore</NavLink>
+//           <NavLink to="/trending" className="mobile-nav-item">Trending</NavLink>
+//           <NavLink to="/genres" className="mobile-nav-item">Genres</NavLink>
+//           <NavLink to="/watchlist" className="mobile-nav-item">Watchlist</NavLink>
+
+//           <div className="mobile-language-dropdown">
+//             <FaGlobe className="icon" />
+//             <span>Language</span>
+//             <div className="mobile-language-options">
+//               <button>English</button>
+//               <button>Telugu</button>
+//               <button>Hindi</button>
+//             </div>
+//           </div>
+
+//           {isLoggedIn === null ? (
+//             <span>Loading...</span>
+//           ) : isLoggedIn ? (
+//             <>
+//               <NavLink to="/profile" className="mobile-profile">
+//                 <FaUser className="icon" />
+//                 <span>{user ? user.username : "Profile"}</span>
+//               </NavLink>
+//               <button onClick={handleLogout} className="mobile-logout-btn">Logout</button>
+//             </>
+//           ) : (
+//             <NavLink to="/login" className="mobile-sign-in">
+//               <FaUser className="icon" />
+//               <span>Sign In</span>
+//             </NavLink>
+//           )}
+//         </div>
+//       )}
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
+import { useState, useContext } from "react";
 import { FaBars, FaTimes, FaUser, FaGlobe } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
-import "./header.css"; // Import external CSS
+import { AuthContext } from "../context/AuthContext"; // ✅ Import AuthContext
+import "./header.css";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // 🚀 Fix: Start with null to prevent incorrect UI
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+    const [isLangOpen, setIsLangOpen] = useState(false);
+    const { user, logout } = useContext(AuthContext); // ✅ Access login state
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedInStatus);
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
 
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+    return (
+        <header className="header">
+            <div className="overlay"></div>
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUser(null);
-    navigate("/");
-  };
+            <div className="header-container">
+                <div className="logo">ReelConnect</div>
 
-  return (
-    <header className="header">
-      <div className="overlay"></div>
+                <nav className="nav-links">
+                    <NavLink to="/" className="nav-item">Home</NavLink>
+                    <NavLink to="/dashboard" className="nav-item">Explore</NavLink>
+                    <NavLink to="/trending" className="nav-item">Trending</NavLink>
+                    <NavLink to="/genres" className="nav-item">Genres</NavLink>
+                    <NavLink to="/watchlist" className="nav-item">Watchlist</NavLink>
+                </nav>
 
-      <div className="header-container">
-        <div className="logo">ReelConnect</div>
+                <div className="right-buttons">
+                    <div className="language-dropdown"
+                        onMouseEnter={() => setIsLangOpen(true)} 
+                        onMouseLeave={() => setIsLangOpen(false)}
+                    >
+                        <button className="language-btn">
+                            <FaGlobe className="icon" />
+                            <span>Language</span>
+                        </button>
+                        {isLangOpen && (
+                            <div className="language-options">
+                                <button>English</button>
+                                <button>Telugu</button>
+                                <button>Hindi</button>
+                            </div>
+                        )}
+                    </div>
 
-        <nav className="nav-links">
-          <NavLink to="/" className="nav-item">Home</NavLink>
-          <NavLink to="/explore" className="nav-item">Explore</NavLink>
-          <NavLink to="/trending" className="nav-item">Trending</NavLink>
-          <NavLink to="/genres" className="nav-item">Genres</NavLink>
-          <NavLink to="/watchlist" className="nav-item">Watchlist</NavLink>
-        </nav>
+                    {user ? ( 
+                        <>
+                            <NavLink to="/profile" className="profile-btn">
+                                <FaUser className="profile" />
+                                <span>{user.username || "Profile"}</span>
+                            </NavLink>
+                            <button onClick={handleLogout} className="logout-btn">Logout</button>
+                        </>
+                    ) : (
+                        <NavLink to="/login" className="sign-in">
+                            <FaUser className="icon" />
+                            <span>Sign In</span>
+                        </NavLink>
+                    )}
+                </div>
 
-        <div className="right-buttons">
-          <div 
-            className="language-dropdown" 
-            onMouseEnter={() => setIsLangOpen(true)} 
-            onMouseLeave={() => setIsLangOpen(false)}
-          >
-            <button className="language-btn">
-              <FaGlobe className="icon" />
-              <span>Language</span>
-            </button>
-            {isLangOpen && (
-              <div className="language-options">
-                <button>English</button>
-                <button>Telugu</button>
-                <button>Hindi</button>
-              </div>
-            )}
-          </div>
-
-          {/* 🚀 Fix: Prevent rendering wrong button before useEffect completes */}
-          {isLoggedIn === null ? (
-            <span>Loading...</span> // Optional: Can replace with a spinner
-          ) : isLoggedIn ? (
-            <>
-              <NavLink to="/profile" className="profile-btn">
-                <FaUser className="icon" />
-                <span>{user ? user.username : "Profile"}</span>
-              </NavLink>
-              <button onClick={handleLogout} className="logout-btn">Logout</button>
-            </>
-          ) : (
-            <NavLink to="/login" className="sign-in">
-              <FaUser className="icon" />
-              <span>Sign In</span>
-            </NavLink>
-          )}
-        </div>
-
-        <div className="mobile-menu">
-          <button onClick={() => setIsOpen(!isOpen)} className="menu-button">
-            {isOpen ? <FaTimes /> : <FaBars />}
-          </button>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="mobile-nav">
-          <NavLink to="/" className="mobile-nav-item">Home</NavLink>
-          <NavLink to="/explore" className="mobile-nav-item">Explore</NavLink>
-          <NavLink to="/trending" className="mobile-nav-item">Trending</NavLink>
-          <NavLink to="/genres" className="mobile-nav-item">Genres</NavLink>
-          <NavLink to="/watchlist" className="mobile-nav-item">Watchlist</NavLink>
-
-          <div className="mobile-language-dropdown">
-            <FaGlobe className="icon" />
-            <span>Language</span>
-            <div className="mobile-language-options">
-              <button>English</button>
-              <button>Telugu</button>
-              <button>Hindi</button>
+                <div className="mobile-menu">
+                    <button onClick={() => setIsOpen(!isOpen)} className="menu-button">
+                        {isOpen ? <FaTimes /> : <FaBars />}
+                    </button>
+                </div>
             </div>
-          </div>
-
-          {isLoggedIn === null ? (
-            <span>Loading...</span>
-          ) : isLoggedIn ? (
-            <>
-              <NavLink to="/profile" className="mobile-profile">
-                <FaUser className="icon" />
-                <span>{user ? user.username : "Profile"}</span>
-              </NavLink>
-              <button onClick={handleLogout} className="mobile-logout-btn">Logout</button>
-            </>
-          ) : (
-            <NavLink to="/login" className="mobile-sign-in">
-              <FaUser className="icon" />
-              <span>Sign In</span>
-            </NavLink>
-          )}
-        </div>
-      )}
-    </header>
-  );
+        </header>
+    );
 };
 
 export default Header;
-
